@@ -22,7 +22,7 @@ fn calculate_price_of_apples(num:int) {
     }
     else 
     {
-        num*1
+        num
     }
 }
 
