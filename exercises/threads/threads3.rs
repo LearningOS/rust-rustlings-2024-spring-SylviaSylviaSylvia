@@ -27,14 +27,16 @@ impl Queue {
 }
 
 fn send_tx(q: Queue, tx: mpsc::Sender<u32>) -> () {
-    let qc = Arc::new(q);
+    let qc = Arc::new(&q);
     let qc1 = Arc::clone(&qc);
     let qc2 = Arc::clone(&qc);
 
     thread::spawn(move || {
         for val in &qc1.first_half {
             println!("sending {:?}", val);
-            tx.send(*val).unwrap();
+            let guard = tx.lock().unwrap();
+            guard.send(val).unwrap();
+            drop(guard); 
             thread::sleep(Duration::from_secs(1));
         }
     });
@@ -42,7 +44,9 @@ fn send_tx(q: Queue, tx: mpsc::Sender<u32>) -> () {
     thread::spawn(move || {
         for val in &qc2.second_half {
             println!("sending {:?}", val);
-            tx.send(*val).unwrap();
+            let guard = tx.lock().unwrap();
+            guard.send(val).unwrap();
+            drop(guard);
             thread::sleep(Duration::from_secs(1));
         }
     });
@@ -56,9 +60,11 @@ fn main() {
     send_tx(queue, tx);
 
     let mut total_received: u32 = 0;
-    for received in rx {
+    for _ in 0..queue_length {
+        if let Ok(received) = rx.recv() {
         println!("Got: {}", received);
         total_received += 1;
+        }
     }
 
     println!("total numbers received: {}", total_received);
