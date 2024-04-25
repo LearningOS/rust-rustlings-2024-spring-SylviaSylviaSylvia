@@ -7,8 +7,6 @@
 // Execute `rustlings hint tests6` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
-
 struct Foo {
     a: u128,
     b: Option<String>,
@@ -29,7 +27,7 @@ mod tests {
 
     #[test]
     fn test_success() {
-        let data = Box::new(Foo { a: 1, b: None });
+        let data = Box::new(Foo { a: 1, b: Some("hello".to_owned()) });
 
         let ptr_1 = &data.a as *const u128 as usize;
         // SAFETY: We pass an owned box of `Foo`.

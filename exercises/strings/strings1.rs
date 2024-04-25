@@ -12,5 +12,5 @@ fn main() {
 }
 
 fn current_favorite_color() -> String {
-    "blue".to_String()
+    "blue".to_string()
 }

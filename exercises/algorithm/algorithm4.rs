@@ -2,8 +2,6 @@
 	binary_search tree
 	This problem requires you to implement a basic interface for a binary tree
 */
-
-//I AM NOT DONE
 use std::cmp::Ordering;
 use std::fmt::Debug;
 
@@ -82,12 +80,15 @@ where
                     self.left = Some(Box::new(TreeNode::new(value)));
                 }
             },
-            Ordering::Greater | Ordering::Equal => {
+            Ordering::Greater => {
                 if let Some(ref mut right) = self.right {
                     right.insert(value);
                 } else {
                     self.right = Some(Box::new(TreeNode::new(value)));
                 }
+            },
+            Ordering::Equal => {
+
             }
         }
     }
@@ -135,22 +136,20 @@ mod tests {
     fn test_insert_duplicate() {
         let mut bst = BinarySearchTree::new();
 
-        
         bst.insert(1);
-        bst.insert(1);
+        bst.insert(1);  
 
-        
-        assert_eq!(bst.search(1), true);
+        assert_eq!(bst.search(1), true); 
 
-        
         match bst.root {
             Some(ref node) => {
-                assert!(node.left.is_none());
-                assert!(node.right.is_none());
+                assert!(node.left.is_none());  
+                assert!(node.right.is_none()); 
             },
             None => panic!("Root should not be None after insertion"),
         }
-    }
+    }    
+
 }    
 
 
