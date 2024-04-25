@@ -20,14 +20,12 @@ struct Foo {
 unsafe fn raw_pointer_to_box(ptr: *mut Foo) -> Box<Foo> {
     // SAFETY: The `ptr` contains an owned box of `Foo` by contract. We
     // simply reconstruct the box from that pointer.
-    let mut ret: Box<Foo> = unsafe { raw_pointer_to_box(*mut Foo) };
-    todo!("The rest of the code goes here")
+    Box::from_raw(ptr)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::time::Instant;
 
     #[test]
     fn test_success() {

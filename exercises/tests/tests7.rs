@@ -36,7 +36,20 @@
 
 // I AM NOT DONE
 
-fn main() {}
+use std::time::{SystemTime, UNIX_EPOCH};
+
+fn main() {
+    let now = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .expect("Time went backwards")
+        .as_secs();
+
+    // Correct directive to Cargo
+    println!("cargo:rustc-env=TEST_FOO={}", now);
+}
+
+
+
 
 #[cfg(test)]
 mod tests {
